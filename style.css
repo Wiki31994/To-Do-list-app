@@ -1,123 +1,174 @@
-body{
-    background-color: rgb(52, 50, 50);
+/* Reset and Base Styles */
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
+body {
+    background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+    color: #333;
+}
 
-.container{
+.container {
     width: 100%;
     min-height: 100vh;
-    padding: 10px;
-}
-
-.todo-app{
-    max-width: 545px;
-    background-color: azure;
-    margin: 100px auto;
-    padding: 40px 30px 70px;
-    border-radius: 15px;
-}
-
-.todo-app h2{
-    color: rgb(112, 211, 178);
+    padding: 20px;
     display: flex;
     align-items: center;
-    margin-bottom: 30px;
-}
-.todo-app h2 img{
-    margin: auto;
-    width: 35px;
-    margin-left: 15px;
+    justify-content: center;
 }
 
-.todo-app:hover{
-    box-shadow: 1px 3px 3px 4px rgb(38, 179, 103);
+/* Todo App Container */
+.todo-app {
+    width: 100%;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.95);
+    margin: 0 auto;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
-.row{
+.todo-app:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(38, 179, 103, 0.2);
+}
+
+/* Header Styles */
+.todo-app h2 {
+    color: #2c3e50;
+    font-size: 1.8rem;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background-color: rgb(146, 197, 242);
-    border-radius: 10px;
-    padding-left: 5px;
-    margin-bottom: 50px;
+    margin-bottom: 2rem;
+    font-weight: 600;
 }
 
-input{
+.todo-app h2 img {
+    width: 30px;
+    margin-left: 12px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* Input Row Styles */
+.row {
+    display: flex;
+    gap: 10px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 5px;
+    margin-bottom: 2rem;
+    border: 1px solid #e9ecef;
+    transition: all 0.2s ease;
+}
+
+.row:focus-within {
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+input {
     flex: 1;
-    border: none;
-    outline: none;
-    background: transparent;
     padding: 15px;
-    font-weight: 10px;
-}
-button{
+    font-size: 1rem;
+    color: #495057;
+    background: transparent;
     border: none;
     outline: none;
-    font-family: 'Courier New', Courier, monospace;
-    background-color: rgb(88, 228, 146);
-    border-radius: 10px;
-    padding: 16px 50px;
-    font-size: 16px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    cursor: pointer;
+}
+
+input::placeholder {
+    color: #adb5bd;
+}
+
+button {
+    background: #4CAF50;
     color: white;
-}
-
-button:hover{
-    background-color: rgb(64, 167, 64);
-}
-
-ul li{
-    position:relative;
-    list-style: none;
-    font-size: 19px;
-    padding: 6px 8px 12px 50px;
-    user-select: none;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
     cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
-ul li::before{
+
+button:hover {
+    background: #43a047;
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+/* List Item Styles */
+ul {
+    margin-top: 20px;
+}
+
+ul li {
+    position: relative;
+    padding: 12px 8px 12px 50px;
+    background: #fff;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+ul li:hover {
+    background: #f8f9fa;
+    border-color: #e9ecef;
+}
+
+ul li::before {
     content: '';
     position: absolute;
-    height: 16px;
-    width: 15px;
-    border-radius: 10px;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
     background-image: url(images/unchecked.png);
     background-size: cover;
     background-position: center;
-    top: 8px;
-    left: 16px;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
 }
 
-ul li.checked{
-    color: darkgray;
+ul li.checked {
+    color: #868e96;
     text-decoration: line-through;
-
+    background: #f8f9fa;
 }
 
-ul li.checked::before{
-    color: rgb(148, 148, 148);
+ul li.checked::before {
     background-image: url(images/checked.png);
 }
 
-
-ul li span{
+/* Delete Button Styles */
+ul li span {
     position: absolute;
-    right: 0;
-    top: 5px;
-    width: 40px;
-    height: 40px;
-    font-size: 22px;
-    color: rgb(103, 103, 103);
-    line-height: 40px;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+    color: #868e96;
+    line-height: 35px;
     text-align: center;
     border-radius: 50%;
+    transition: all 0.2s ease;
 }
 
-ul li span:hover{
-    background-color: #f3f3f3;
+ul li span:hover {
+    background: #ff5252;
+    color: white;
 }
