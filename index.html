@@ -8,11 +8,16 @@
             To-Do-List Application
         </title>
         <link rel="stylesheet" href="style.css">
+        <script src="https://alcdn.msauth.net/browser/2.27.0/js/msal-browser.min.js"></script>
     </head>
     <body>
         <div class="container">
             <div class="todo-app">
                 <h2>To-Do-List <img src="images/notes.png"></h2>
+
+                <!-- Login Button -->
+                <button id="loginButton">Login with Microsoft</button>
+
                 <div class="row">
                     <input type="text" id="input-box" placeholder="Add your list here">
                     <button onclick="addTask()">ADD</button>
@@ -25,6 +30,35 @@
         </div>
         
         <script src="script.js"></script>
-    </body>
+        <script>
+            // MSAL configuration object
+            const msalConfig = {
+                auth: {
+                    clientId: "e8c11b5c-c541-46a4-b203-404c6b983743", // Application (client) ID
+                    authority: "https://login.microsoftonline.com/4a77ac88-13b5-4193-8ab6-0fdf4516fc4b", // Directory (tenant) ID
+                    redirectUri: "https://gregarious-chimera-73202c.netlify.app/", // Netlify app URL
+                }
+            };
 
+            // Create a new MSAL instance
+            const msalInstance = new msal.PublicClientApplication(msalConfig);
+
+            // Function to handle login
+            function login() {
+                msalInstance.loginPopup()
+                    .then(response => {
+                        console.log('User logged in:', response);
+                        // You can now call Microsoft Graph APIs or display user info here
+                        alert('Login Successful! User Info: ' + JSON.stringify(response.account));
+                    })
+                    .catch(error => {
+                        console.error('Login error:', error);
+                        alert('Login failed: ' + error.message);
+                    });
+            }
+
+            // Add event listener to trigger login
+            document.getElementById("loginButton").addEventListener("click", login);
+        </script>
+    </body>
 </html>
