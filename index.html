@@ -4,9 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>
-            To-Do-List Application
-        </title>
+        <title>To-Do-List Application</title>
         <link rel="stylesheet" href="style.css">
         <script src="https://alcdn.msauth.net/browser/2.27.0/js/msal-browser.min.js"></script>
     </head>
@@ -15,17 +13,19 @@
             <div class="todo-app">
                 <h2>To-Do-List <img src="images/notes.png"></h2>
 
-                <!-- Login Button -->
+                <!-- Login Button (visible only if user is not logged in) -->
                 <button id="loginButton">Login with Microsoft</button>
 
-                <div class="row">
-                    <input type="text" id="input-box" placeholder="Add your list here">
-                    <button onclick="addTask()">ADD</button>
+                <!-- To-Do List Section (hidden if not logged in) -->
+                <div id="todo-section" style="display: none;">
+                    <div class="row">
+                        <input type="text" id="input-box" placeholder="Add your list here">
+                        <button onclick="addTask()">ADD</button>
+                    </div>
+                    <ul id="list-container">
+                        <!-- List items will appear here -->
+                    </ul>
                 </div>
-                <ul id="list-container">
-                    <!--<li class="checked">task 0</li>
-                    <li>Taks 1</li> -->
-                </ul>
             </div>
         </div>
         
@@ -43,13 +43,35 @@
             // Create a new MSAL instance
             const msalInstance = new msal.PublicClientApplication(msalConfig);
 
+            // Check if the user is already logged in
+            function checkLoginStatus() {
+                const currentAccount = msalInstance.getAllAccounts()[0]; // Get the first account if multiple
+                if (currentAccount) {
+                    showTodoApp(currentAccount);
+                } else {
+                    showLoginButton();
+                }
+            }
+
+            // Show the To-Do list app after login
+            function showTodoApp(account) {
+                document.getElementById("loginButton").style.display = "none"; // Hide login button
+                document.getElementById("todo-section").style.display = "block"; // Show the to-do section
+                alert(`Welcome, ${account.username}`); // You can replace this with any user-specific content
+            }
+
+            // Show the login button if not logged in
+            function showLoginButton() {
+                document.getElementById("loginButton").style.display = "block"; // Show login button
+                document.getElementById("todo-section").style.display = "none"; // Hide the to-do section
+            }
+
             // Function to handle login
             function login() {
                 msalInstance.loginPopup()
                     .then(response => {
                         console.log('User logged in:', response);
-                        // You can now call Microsoft Graph APIs or display user info here
-                        alert('Login Successful! User Info: ' + JSON.stringify(response.account));
+                        showTodoApp(response.account); // Show the to-do app after successful login
                     })
                     .catch(error => {
                         console.error('Login error:', error);
@@ -59,6 +81,9 @@
 
             // Add event listener to trigger login
             document.getElementById("loginButton").addEventListener("click", login);
+
+            // Check login status when the page loads
+            checkLoginStatus();
         </script>
     </body>
 </html>
